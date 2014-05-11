@@ -7,7 +7,7 @@
     <TableLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/tl_week"
+            android:id="@+id/tl_template"
             >
 
     </TableLayout>

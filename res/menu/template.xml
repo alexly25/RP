@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:sabd="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_reset"
+          android:title="Не четная"
+          sabd:showAsAction="always"/>
+    <item android:id="@+id/action_semester"
+          android:title="Семестр"
+          sabd:showAsAction="never"/>
+    <item android:id="@+id/action_new_group"
+          android:title="Новая группа"
+          sabd:showAsAction="never"/>
+    <item android:id="@+id/action_new_subject"
+          android:title="Новый предмет"
+          sabd:showAsAction="never"/>
+</menu>

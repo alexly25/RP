@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.alex.RP">
-    <uses-sdk android:minSdkVersion="10"/>
+          package="com.alex.rp">
+    <uses-sdk android:minSdkVersion="7"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".Week">
+        <activity android:name=".week.Timetable"
+                  android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Groups"/>
+        <activity android:name=".group.Groups"
+                  android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".week.Timetable"/>
+        </activity>
+        <activity android:name=".Lesson"
+                  android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".Template"/>
+        </activity>
+        <activity android:name=".Semester"
+                  android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".Template"/>
+        </activity>
+        <activity android:name=".subject.Subjects"
+                  android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".week.Timetable"/>
+        </activity>
+        <activity android:name=".statistic.Statistic"
+                  android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".week.Timetable"/>
+        </activity>
+        <activity android:name=".week.Template"
+                  android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".week.Timetable"/>
+        </activity>
     </application>
 </manifest>

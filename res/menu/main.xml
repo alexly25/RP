@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:sabd="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_back"
+          android:title="Предыдущая"
+          sabd:showAsAction="always"/>
+    <item android:id="@+id/action_next"
+          android:title="Следующая"
+          sabd:showAsAction="always"/>
+    <item android:id="@+id/action_statistic"
+          android:title="Статистика"
+          sabd:showAsAction="never"/>
+    <item android:id="@+id/action_template"
+          android:title="Шаблон"
+          sabd:showAsAction="never"/>
+    <item android:id="@+id/action_group"
+          android:title="Группы"
+          sabd:showAsAction="never"/>
+    <item android:id="@+id/action_subject"
+          android:title="Предметы"
+          sabd:showAsAction="never"/>
+</menu>

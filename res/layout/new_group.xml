@@ -1,63 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView2">
+    <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent">
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Название группы:"
+                    android:id="@+id/textView" android:layout_weight="1"
+                    android:gravity="center"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_name_group" android:layout_weight="1"
+                    android:gravity="center"/>
+        </TableRow>
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Цвет:"
+                    android:id="@+id/textView2" android:layout_weight="1"
+                    android:gravity="center"/>
+            <ScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:layout_weight="1"
+                    android:gravity="center"
+                    android:id="@+id/scrollView" android:focusable="false">
 
-    <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Название группы:"
-                android:id="@+id/textView" android:layout_weight="1"
-                android:gravity="center"/>
-        <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText" android:layout_weight="1"
-                android:gravity="center" />
-    </TableRow>
-    <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Цвет:"
-                android:id="@+id/textView2" android:layout_weight="1"
-                android:gravity="center"/>
-        <ScrollView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:layout_weight="1"
-                android:gravity="center"
-                android:id="@+id/scrollView" android:focusable="false">
+                <RadioGroup
+                        android:id="@+id/rg_color"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center">
+                    <RadioButton
+                            android:id="@+id/radioHeaderYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Красный" android:layout_gravity="left" android:textColor="#ff0000"/>
 
+                    <RadioButton
+                            android:id="@+id/radioHeaderNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Синий" android:layout_gravity="left" android:textColor="#0000ff"/>
+
+                    <RadioButton
+                            android:id="@+id/radioHeaderNA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Зеленный" android:layout_gravity="left" android:textColor="#00ff00"/>
+                </RadioGroup>
+            </ScrollView>
+        </TableRow>
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Тип:"
+                    android:id="@+id/textView3" android:layout_weight="1"
+                    android:gravity="center"/>
             <RadioGroup
-                    android:id="@+id/radio_group"
+                    android:id="@+id/rg_commerce"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" android:layout_weight="1"
                     android:gravity="center">
                 <RadioButton
-                        android:id="@+id/radioHeaderYes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="Красный" android:layout_gravity="left" android:textColor="#ff0000"/>
-
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:text="Коммерция"
+                        android:id="@+id/rbCommerce"
+                        android:checked="true"/>
                 <RadioButton
-                        android:id="@+id/radioHeaderNo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Синий" android:layout_gravity="left" android:textColor="#0000ff"/>
-
-                <RadioButton
-                        android:id="@+id/radioHeaderNA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Зеленный" android:layout_gravity="left" android:textColor="#00ff00"/>
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:text="Бюджет"
+                        android:id="@+id/rbBudget"/>
             </RadioGroup>
-        </ScrollView>
-    </TableRow>
-</TableLayout>
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>
