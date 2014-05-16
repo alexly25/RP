@@ -2,10 +2,12 @@ package com.alex.rp.group;
 
 import com.alex.rp.db.Color;
 
+import java.io.Serializable;
+
 /**
  * Created by alex on 10.05.2014.
  */
-public class Group {
+public class Group implements Serializable {
     private String name;
     private Color color;
     private boolean commerce;

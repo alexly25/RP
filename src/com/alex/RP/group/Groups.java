@@ -67,9 +67,9 @@ public class Groups extends ActionBarActivity implements AdapterView.OnItemClick
         super.onRestart();
 
         alGroups = new ArrayList<String>();
-        DB DB = new DB(this);
-        groups = DB.getGroups();
-        DB.close();
+        DB db = new DB(this);
+        groups = db.getGroups();
+        db.close();
 
         for (int i = 0; i < groups.size(); i++) {
             Group group = groups.get(i);

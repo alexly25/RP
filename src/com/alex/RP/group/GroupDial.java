@@ -41,7 +41,7 @@ public class GroupDial extends DialogFragment implements DialogInterface.OnClick
             groups = ((Groups) activity);
             group = groups.getSelectedGroup();
             LayoutInflater inflater = activity.getLayoutInflater();
-            v = inflater.inflate(R.layout.new_group, null);
+            v = inflater.inflate(R.layout.group, null);
             etNameGroup = (EditText) v.findViewById(R.id.et_name_group);
             rgColor = (RadioGroup) v.findViewById(R.id.rg_color);
             rgCommerce = (RadioGroup) v.findViewById(R.id.rg_commerce);

@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.alex.rp.group.Group;
+import com.alex.rp.semester.Semester;
 import com.alex.rp.subject.Subject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by alex on 23.03.14.
@@ -50,6 +52,11 @@ public class SQLite extends SQLiteOpenHelper {
         db.execSQL("create table " + Vars.TABLE_SUBJECT + " ("
                 + Vars.COLUMN_ID + " integer not null primary key autoincrement,"
                 + Vars.COLUMN_NAME + " text not null unique);");
+
+        db.execSQL("create table " + Vars.TABLE_SEMESTER + " ("
+                + Vars.COLUMN_ID + " integer not null primary key autoincrement,"
+                + Vars.COLUMN_START + " date not null unique,"
+                + Vars.COLUMN_END + " date not null unique);");
     }
 
     @Override
@@ -68,6 +75,25 @@ public class SQLite extends SQLiteOpenHelper {
         try {
 
             deleted = db.delete(Vars.TABLE_GROUP, Vars.COLUMN_NAME + " = ?", new String[]{name});
+
+        } catch (Exception e) {
+
+            Log.d(LOG, "!!!!!deleteNote() catch error: " + e.toString());
+
+        }
+
+        return deleted;
+    }
+
+    public int delete(Subject subject){
+        Log.d(LOG, "delete");
+        int deleted = 0;
+
+        String name = subject.getName();
+
+        try {
+
+            deleted = db.delete(Vars.TABLE_SUBJECT, Vars.COLUMN_NAME + " = ?", new String[]{name});
 
         } catch (Exception e) {
 
@@ -101,40 +127,6 @@ public class SQLite extends SQLiteOpenHelper {
 
         return (result > 0) ? true : false;
     }
-
-/*
-
-    public String getGroup(boolean even, int id) {
-
-        //Log.d(LOG, "get");
-
-        String group = null;
-        int eveni = (even) ? 1 : 0;
-
-        try {
-
-            c = db.query(Vars.TABLE_TEMPLATE, new String[]{Vars.COLUMN_GROUP}, Vars.COLUMN_EVEN + " = " + eveni +
-                    " and " + Vars.COLUMN_ID_PAIR + " = " + id, null, null, null, null);
-
-            if (c.moveToFirst()) {
-
-                group = c.getString(0);
-
-            } else {
-                //Log.d(LOG, "group " + id + " is note: " + group);
-            }
-
-        } catch (Exception e) {
-
-        } finally {
-
-            c.close();
-        }
-
-
-        return group;
-    }
-*/
 
     public ArrayList<Group> getGroups() {
         Log.d(LOG, "getGroups");
@@ -175,10 +167,8 @@ public class SQLite extends SQLiteOpenHelper {
         return result;
     }
 
-    //-------------------------------------------------------------------------------- Subject
-
     public ArrayList<Subject> getSubject() {
-        Log.d(LOG, "getSubject");
+        Log.d(LOG, "getSubjects");
 
         ArrayList<Subject> result = new ArrayList<Subject>();
 
@@ -197,12 +187,12 @@ public class SQLite extends SQLiteOpenHelper {
                 } while (c.moveToNext());
 
             } else {
-                Log.d(LOG, "getSubject() 0 rows");
+                Log.d(LOG, "getSubjects() 0 rows");
             }
 
         } catch (Exception e) {
 
-            Log.d(LOG, "!!!!!getSubject() catch error: " + e.toString());
+            Log.d(LOG, "!!!!!getSubjects() catch error: " + e.toString());
             return null;
 
         } finally {
@@ -212,23 +202,40 @@ public class SQLite extends SQLiteOpenHelper {
         return result;
     }
 
-    public int delete(Subject subject){
-        Log.d(LOG, "delete");
-        int deleted = 0;
+    public ArrayList<Semester> getSemester(){
+        Log.d(LOG, "getSemester");
 
-        String name = subject.getName();
+        ArrayList<Semester> result = new ArrayList<Semester>();
 
         try {
 
-            deleted = db.delete(Vars.TABLE_SUBJECT, Vars.COLUMN_NAME + " = ?", new String[]{name});
+            c = db.query(Vars.TABLE_SEMESTER, null, null, null, null, null, null); // делаем запрос всех данных из таблицы tableName
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    Date start = new Date(c.getLong(1));
+                    Date end = new Date(c.getLong(2));
+                    Semester semester = new Semester(start,end);
+                    result.add(semester);
+
+                } while (c.moveToNext());
+
+            } else {
+                Log.d(LOG, "getSemester() 0 rows");
+            }
 
         } catch (Exception e) {
 
-            Log.d(LOG, "!!!!!deleteNote() catch error: " + e.toString());
+            Log.d(LOG, "!!!!!getSemester() catch error: " + e.toString());
+            return null;
 
+        } finally {
+            c.close();
         }
 
-        return deleted;
+        return result;
     }
 
     //-------------------------------------------------------------------------------- Other

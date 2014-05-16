@@ -20,9 +20,15 @@ import java.util.GregorianCalendar;
 public class WeekTable extends Table {
 
     private final static String LOG = "WeekTable";
+    Date date;
+    protected Calendar calendar;
 
-    public WeekTable(Activity activity, TableLayout tl, MyString selectedGroup, Date date) {
-        super(activity, tl, selectedGroup, date);
+    public WeekTable(Activity activity, TableLayout tl, Date date) {
+        super(activity, tl);
+
+        this.date = date;
+        calendar = new GregorianCalendar();
+        calendar.setTime(date);
 
         for (int i = 0; i < 8; i++) {
 

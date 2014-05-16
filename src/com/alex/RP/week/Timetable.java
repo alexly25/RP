@@ -1,118 +1,49 @@
 package com.alex.rp.week;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.*;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import com.alex.rp.MyString;
-import com.alex.rp.R;
-import com.alex.rp.group.Groups;
-import com.alex.rp.statistic.Statistic;
-import com.alex.rp.subject.Subjects;
-import com.alex.rp.tables.Table;
-import com.alex.rp.tables.WeekTable;
-import com.alex.rp.week.Template;
+import com.alex.rp.lesson.Lesson;
+import com.alex.rp.semester.Semester;
 
-import java.util.Date;
+import java.io.Serializable;
 
 /**
- * Created by alex on 23.03.14.
+ * Created by alex on 12.05.2014.
  */
-public class Timetable extends ActionBarActivity {
+public class Timetable implements Serializable {
 
-    private final static String LOG = "Timetable";
-    private MyString selectedGroup;
-    private TableLayout tl;
-    private Date date;
-    private Table table;
+    private Semester semester;
+    private boolean even;
+    private int day;
+    private Lesson lesson;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.week);
-
-        date = new Date();
-
-        tl = (TableLayout) findViewById(R.id.tl_week);
-        tl.setStretchAllColumns(true);
-        tl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-
-        selectedGroup = new MyString("");
-        table = new WeekTable(this, tl, selectedGroup, date);
-
-
+    public Timetable(Semester semester){
+        this.semester = semester;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+    public Semester getSemester() {
+        return semester;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_back:
-                back();
-                break;
-            case R.id.action_next:
-                next();
-                break;
-            case R.id.action_statistic:
-                startActivity(new Intent(this, Statistic.class));
-                break;
-            case R.id.action_template:
-                startActivity(new Intent(this, Template.class));
-                break;
-            case R.id.action_group:
-                startActivity(new Intent(this, Groups.class));
-                break;
-            case R.id.action_subject:
-                startActivity(new Intent(this, Subjects.class));
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean isEven() {
+        return even;
     }
 
-    private void back(){
-        Log.d(LOG, "back");
-
-        long dateTime = date.getTime() - 604800000;
-        date = new Date(dateTime);
-        ((WeekTable)table).setDate(date);
+    public int getDay() {
+        return day;
     }
 
-    private void next(){
-        Log.d(LOG, "next");
-
-        long dateTime = date.getTime() + 604800000;
-        date = new Date(dateTime);
-        ((WeekTable)table).setDate(date);
+    public Lesson getLesson() {
+        return lesson;
     }
 
-/*
-    @Override
-    public void onClick(View view) {
+    public void setEven(boolean even) {
+        this.even = even;
+    }
 
-        long dateTime;
+    public void setDay(int day) {
+        this.day = day;
+    }
 
-        switch (view.getId()) {
-            case R.id.btn_new_group:
-                new GroupDial().show(getSupportFragmentManager(), null);
-                break;
-        }
-
-
-    }*/
-
-    public void setSelectedGroup(String group) {
-        selectedGroup.setString(group);
-
-        Log.d(LOG, "selected group: " + selectedGroup.getString());
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
     }
 }

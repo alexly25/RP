@@ -1,9 +1,11 @@
 package com.alex.rp.db;
 
+import java.io.Serializable;
+
 /**
  * Created by alex on 11.05.2014.
  */
-public class Color {
+public class Color implements Serializable {
 
     private int id;
     private String name;

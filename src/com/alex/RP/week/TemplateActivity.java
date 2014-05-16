@@ -8,23 +8,23 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import com.alex.rp.MyString;
 import com.alex.rp.R;
+import com.alex.rp.db.Vars;
 import com.alex.rp.group.GroupDialog;
+import com.alex.rp.semester.Semester;
 import com.alex.rp.subject.SubjectDialog;
 import com.alex.rp.tables.Table;
 import com.alex.rp.tables.TemplateTable;
 
-import java.util.Date;
-
 /**
  * Created by alex on 08.05.2014.
  */
-public class Template extends ActionBarActivity {
+public class TemplateActivity extends ActionBarActivity {
 
-    private final static String LOG = "Template";
+    private final static String LOG = "TemplateActivity";
     private MyString selectedGroup;
     private TableLayout tl;
-    private Date date;
     private Table table;
+    private Semester semester;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +34,9 @@ public class Template extends ActionBarActivity {
         tl.setStretchAllColumns(true);
         tl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        date = new Date();
+        semester = (Semester) getIntent().getSerializableExtra(Vars.FIELD_SEMESTER);
 
-        selectedGroup = new MyString("");
-        table = new TemplateTable(this, tl, selectedGroup, date);
+        table = new TemplateTable(this, tl, semester);
     }
 
     @Override
@@ -55,8 +54,9 @@ public class Template extends ActionBarActivity {
             case R.id.action_reset:
                 //reset();
                 break;
-            case R.id.action_semester:
-                break;
+/*            case R.id.action_template:
+                startActivity(new Intent(this, Semesters.class));
+                break;*/
             case R.id.action_new_group:
                 new GroupDialog().show(getSupportFragmentManager(), null);
                 break;

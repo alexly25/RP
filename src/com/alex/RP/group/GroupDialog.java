@@ -37,7 +37,7 @@ public class GroupDialog extends DialogFragment implements DialogInterface.OnCli
             builder = new AlertDialog.Builder(getActivity());
 
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            v = inflater.inflate(R.layout.new_group, null);
+            v = inflater.inflate(R.layout.group, null);
             etNameGroup = (EditText) v.findViewById(R.id.et_name_group);
             rgColor = (RadioGroup) v.findViewById(R.id.rg_color);
             rgCommerce = (RadioGroup) v.findViewById(R.id.rg_commerce);
@@ -82,9 +82,10 @@ public class GroupDialog extends DialogFragment implements DialogInterface.OnCli
             db.add(group);
             db.close();
 
-            Groups groups = (Groups) getActivity();
-            groups.update();
-
+            if(getActivity().getClass() == Groups.class){
+                Groups groups = (Groups) getActivity();
+                groups.update();
+            }
         }
     }
 }

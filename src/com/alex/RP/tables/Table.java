@@ -20,19 +20,13 @@ public abstract class Table implements View.OnClickListener{
     protected Activity activity;
     protected MyString selectedGroup;
     protected DB db;
-    protected Date date;
     protected TextView[] arrTv;
     protected TextView[] arrTvBorder2;// Массив TV содержащий столбцы сегоднешнего дня
-    protected Calendar calendar;
 
 
-    Table(final Activity activity, TableLayout tl, MyString selectedGroup, Date date) {
+    Table(final Activity activity, TableLayout tl) {
 
         this.activity = activity;
-        this.selectedGroup = selectedGroup;
-        this.date = date;
-        calendar = new GregorianCalendar();
-        calendar.setTime(date);
 
         db = new DB(activity);
         db.outTables();

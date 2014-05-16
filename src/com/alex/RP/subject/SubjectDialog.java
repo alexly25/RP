@@ -11,12 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 import com.alex.rp.R;
 import com.alex.rp.db.DB;
-import com.alex.rp.group.Groups;
 
 /**
  * Created by alex on 09.05.2014.
  */
 public class SubjectDialog extends DialogFragment implements DialogInterface.OnClickListener{
+
     private final static String LOG = "SubjectDialog";
     private View v;
     private EditText etNameSubject;
@@ -32,7 +32,7 @@ public class SubjectDialog extends DialogFragment implements DialogInterface.OnC
             builder = new AlertDialog.Builder(getActivity());
 
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            v = inflater.inflate(R.layout.new_subject, null);
+            v = inflater.inflate(R.layout.subject, null);
             etNameSubject = (EditText) v.findViewById(R.id.et_name_subject);
 
             builder.setView(v)
@@ -60,9 +60,10 @@ public class SubjectDialog extends DialogFragment implements DialogInterface.OnC
             db.add(subject);
             db.close();
 
-            Subjects subjects = (Subjects) getActivity();
-            subjects.update();
-
+            if(getActivity().getClass() == Subjects.class) {
+                Subjects subjects = (Subjects) getActivity();
+                subjects.update();
+            }
         }
     }
 

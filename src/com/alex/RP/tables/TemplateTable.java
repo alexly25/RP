@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import com.alex.rp.Lesson;
-import com.alex.rp.MyString;
+import com.alex.rp.db.Vars;
+import com.alex.rp.lesson.LessonActivity;
 import com.alex.rp.R;
-
-import java.util.Date;
+import com.alex.rp.semester.Semester;
+import com.alex.rp.week.Timetable;
 
 /**
  * Created by alex on 02.05.2014.
@@ -19,9 +19,11 @@ import java.util.Date;
 public class TemplateTable extends Table {
 
     private final static String LOG = "TemplateTable";
+    private Semester semester;
 
-    public TemplateTable(Activity activity, TableLayout tl, MyString selectedGroup, Date date) {
-        super(activity, tl, selectedGroup, date);
+    public TemplateTable(Activity activity, TableLayout tl, Semester semester) {
+        super(activity, tl);
+        this.semester = semester;
 
         for (int i = 0; i < 8; i++) {
 
@@ -105,7 +107,12 @@ public class TemplateTable extends Table {
     @Override
     public void onClick(View view) {
 
-        activity.startActivity(new Intent(activity, Lesson.class));
+        Timetable timetable = new Timetable(semester);
+        timetable.setDay(view.getId());
+
+        Intent intent = new Intent(activity, LessonActivity.class);
+        intent.putExtra(Vars.FIELD_TIMETABLE, timetable);
+        activity.startActivity(intent);
 
 /*
         switch (view.getId()) {
@@ -133,8 +140,8 @@ public class TemplateTable extends Table {
         DB.add(true, id, group);
         String group2 = DB.get(true, id);
         tv.setText(group2);
-        DB.close();*//*
-                activity.startActivity(new Intent(activity, Lesson.class));
+        DB.close();
+                activity.startActivity(new Intent(activity, LessonActivity.class));
                 break;
         }*/
     }

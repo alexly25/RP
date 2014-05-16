@@ -11,8 +11,8 @@
     <item android:id="@+id/action_statistic"
           android:title="Статистика"
           sabd:showAsAction="never"/>
-    <item android:id="@+id/action_template"
-          android:title="Шаблон"
+    <item android:id="@+id/action_semester"
+          android:title="Семестры"
           sabd:showAsAction="never"/>
     <item android:id="@+id/action_group"
           android:title="Группы"

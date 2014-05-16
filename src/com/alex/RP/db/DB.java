@@ -4,9 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 import com.alex.rp.group.Group;
+import com.alex.rp.semester.Semester;
 import com.alex.rp.subject.Subject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by alex on 23.03.14.
@@ -21,7 +23,7 @@ public class DB implements DBI {
         this.sqLite = new SQLite(context);
     }
 
-    //----------------------------------------------------------------- Group
+    //----------------------------------------------------------------- Add
 
     @Override
     public boolean add(Group group) {
@@ -51,33 +53,6 @@ public class DB implements DBI {
     }
 
     @Override
-    public boolean delete(Group group) {
-
-        return sqLite.delete(group) > 0;
-    }
-
-    @Override
-    public ArrayList<Group> getGroups() {
-        return sqLite.getGroups();
-    }
-
-
-    private boolean isExist(String table, String selection, String[] values) {
-        Log.d(LOG, "isExist");
-        int count = sqLite.getCount(table, selection, values);
-        return count > 0;
-    }
-/*
-
-    @Override
-    public String get(boolean even, int id) {
-        return sqLite.getGroup(even, id);
-    }
-*/
-
-    //--------------------------------------------------------------------------------- Subject
-
-    @Override
     public boolean add(Subject subject) {
         Log.d(LOG, "add()");
 
@@ -101,13 +76,60 @@ public class DB implements DBI {
 
     }
 
-    public ArrayList<Subject> getSubject(){
+    @Override
+    public boolean add(Semester semester) {
+
+        Date start = semester.getStart();
+        Date end = semester.getEnd();
+
+        ContentValues cv = new ContentValues();
+        cv.put(Vars.COLUMN_START, start.getTime());
+        cv.put(Vars.COLUMN_END, end.getTime());
+        return sqLite.insert(Vars.TABLE_SEMESTER, cv);
+    }
+
+    private boolean isExist(String table, String selection, String[] values) {
+        Log.d(LOG, "isExist");
+        int count = sqLite.getCount(table, selection, values);
+        return count > 0;
+    }
+
+    //--------------------------------------------------------------------------------- Get
+
+    @Override
+    public ArrayList<Group> getGroups() {
+        return sqLite.getGroups();
+    }
+
+    @Override
+    public ArrayList<Subject> getSubjects(){
         return sqLite.getSubject();
     }
 
+    @Override
+    public ArrayList<Semester> getSemesters() {
+        return sqLite.getSemester();
+    }
+
+    //--------------------------------------------------------------------------------- Delete
+
+    @Override
+    public boolean delete(Group group) {
+
+        return sqLite.delete(group) > 0;
+    }
+
+    @Override
     public boolean delete(Subject subject){
         return sqLite.delete(subject) > 0;
     }
+
+    @Override
+    public boolean delete(Semester semester) {
+        return false;
+    }
+
+
 
     //-------------------------------------------------------------------------------- Other
 
