@@ -19,6 +19,13 @@ public class Timetable implements Serializable {
         this.semester = semester;
     }
 
+    public Timetable(Semester semester, boolean even, int day, Lesson lesson){
+        this.semester = semester;
+        this.even = even;
+        this.day = day;
+        this.lesson = lesson;
+    }
+
     public Semester getSemester() {
         return semester;
     }
@@ -45,5 +52,9 @@ public class Timetable implements Serializable {
 
     public void setLesson(Lesson lesson) {
         this.lesson = lesson;
+    }
+
+    public String toString(){
+        return new StringBuilder().append(lesson.getGroup().getName()).append(", ").append(lesson.getSubject().getName()).append(", ").append(day).append(", ").append(semester.getStart().toString()).toString();
     }
 }

@@ -16,6 +16,9 @@ import com.alex.rp.db.Vars;
 import com.alex.rp.week.TemplateActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by alex on 11.05.2014.
@@ -73,18 +76,44 @@ public class Semesters extends ActionBarActivity implements AdapterView.OnItemCl
         super.onRestart();
 
         alSemesters = new ArrayList<String>();
+
         DB db = new DB(this);
         semesters = db.getSemesters();
         db.close();
 
         for (int i = 0; i < semesters.size(); i++) {
-            String name = semesters.get(i).getStart().toString() + " " + semesters.get(i).getEnd().toString();
-            alSemesters.add(name);
-        }
 
+            //Log.d(LOG, "" + semesters.get(i).getStart().toString());
+            StringBuilder stringBuilder = getInterval(semesters.get(i));
+            alSemesters.add(stringBuilder.toString());
+        }
 
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alSemesters);
         lvSemester.setAdapter(arrayAdapter);
+    }
+
+    private StringBuilder getInterval(Semester semester) {
+
+        StringBuilder result = new StringBuilder();
+        Calendar calendar = new GregorianCalendar();
+
+        calendar.setTime(semester.getStart());
+        result.append(calendar.get(Calendar.DAY_OF_MONTH))
+                .append(".")
+                .append(calendar.get(Calendar.MONTH) + 1)
+                .append(".")
+                .append(calendar.get(Calendar.YEAR))
+                .append(" - ");
+        //Log.d(LOG, "" + calendar.getTime().toString());
+
+        calendar.setTime(semester.getEnd());
+        result.append(calendar.get(Calendar.DAY_OF_MONTH))
+                .append(".")
+                .append(calendar.get(Calendar.MONTH) + 1)
+                .append(".")
+                .append(calendar.get(Calendar.YEAR));
+
+        return result;
     }
 
     @Override

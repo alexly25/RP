@@ -11,7 +11,10 @@ import com.alex.rp.db.Vars;
 import com.alex.rp.lesson.LessonActivity;
 import com.alex.rp.R;
 import com.alex.rp.semester.Semester;
+import com.alex.rp.week.TemplateActivity;
 import com.alex.rp.week.Timetable;
+
+import java.util.ArrayList;
 
 /**
  * Created by alex on 02.05.2014.
@@ -21,9 +24,10 @@ public class TemplateTable extends Table {
     private final static String LOG = "TemplateTable";
     private Semester semester;
 
-    public TemplateTable(Activity activity, TableLayout tl, Semester semester) {
-        super(activity, tl);
+    public TemplateTable(Activity activity, TableLayout tl, Semester semester, boolean even) {
+        super(activity, tl, even);
         this.semester = semester;
+        alTimetables = db.getTimetables(semester);
 
         for (int i = 0; i < 8; i++) {
 
@@ -56,15 +60,18 @@ public class TemplateTable extends Table {
                     arrTv[i - 2] = textView;
                 } else {
 
-                    //String group = DB.get(true, value);
-                    //textView.setText(group);
+                    Timetable timetable = getTimetable(value);
+
+                    if(timetable != null){
+                        textView.setText(timetable.getLesson().getGroup().getName());
+                    }
+
                     textView.setId(value);
-                    textView.setOnClickListener(this);
+                    textView.setOnClickListener((TemplateActivity) activity);
 
                 }
 
-                    textView.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.border));
-
+                textView.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.border));
                 textView.setGravity(Gravity.CENTER);
                 textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
                 tr.addView(textView);
@@ -74,6 +81,18 @@ public class TemplateTable extends Table {
         }
 
         db.close();
+    }
+
+    private Timetable getTimetable(int day) {
+
+        for(int i=0; i<alTimetables.size(); i++){
+            Timetable timetable = alTimetables.get(i);
+            if(timetable.getDay() == day && timetable.isEven() == even){
+                return timetable;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -103,7 +122,7 @@ public class TemplateTable extends Table {
         }
         return dateAndDay;
     }
-
+/*
     @Override
     public void onClick(View view) {
 
@@ -114,7 +133,7 @@ public class TemplateTable extends Table {
         intent.putExtra(Vars.FIELD_TIMETABLE, timetable);
         activity.startActivity(intent);
 
-/*
+*//*
         switch (view.getId()) {
             case R.id.btn_back_week:
                 Log.d(LOG, "Не четная");
@@ -131,7 +150,7 @@ public class TemplateTable extends Table {
 
                 break;
             default:
-                *//*
+                *//**//*
         String group = selectedGroup.getString();
         int id = view.getId();
         TextView tv = (TextView) view;
@@ -143,6 +162,6 @@ public class TemplateTable extends Table {
         DB.close();
                 activity.startActivity(new Intent(activity, LessonActivity.class));
                 break;
-        }*/
-    }
+        }*//*
+    }*/
 }

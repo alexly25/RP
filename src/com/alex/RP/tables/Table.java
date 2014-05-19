@@ -6,7 +6,9 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import com.alex.rp.db.DB;
 import com.alex.rp.MyString;
+import com.alex.rp.week.Timetable;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -14,19 +16,21 @@ import java.util.GregorianCalendar;
 /**
  * Created by alex on 24.03.14.
  */
-public abstract class Table implements View.OnClickListener{
+public abstract class Table {
 
     private final static String LOG = "Table";
     protected Activity activity;
-    protected MyString selectedGroup;
     protected DB db;
     protected TextView[] arrTv;
     protected TextView[] arrTvBorder2;// Массив TV содержащий столбцы сегоднешнего дня
+    protected ArrayList<Timetable> alTimetables;
+    protected boolean even;
 
 
-    Table(final Activity activity, TableLayout tl) {
+    Table(final Activity activity, TableLayout tl, boolean even) {
 
         this.activity = activity;
+        this.even = even;
 
         db = new DB(activity);
         db.outTables();

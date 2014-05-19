@@ -5,7 +5,10 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name=".week.TimetableActivity"
                   android:theme="@style/Theme.AppCompat.Light">
-
+            <intent-filter>
+                            <action android:name="android.intent.action.MAIN"/>
+                            <category android:name="android.intent.category.LAUNCHER"/>
+                        </intent-filter>
         </activity>
         <activity android:name=".week.TemplateActivity"
                   android:label="@string/activity_template"
@@ -23,10 +26,13 @@
         </activity>
         <activity android:name=".lesson.LessonActivity"
                   android:theme="@style/Theme.AppCompat.Light">
-            <intent-filter>
+            <!--intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            </intent-filter-->
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".week.TemplateActivity"/>
         </activity>
         <activity android:name=".semester.SemesterActivity"
                   android:theme="@style/Theme.AppCompat.Light">

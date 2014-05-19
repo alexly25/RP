@@ -8,10 +8,18 @@ import java.util.Date;
  */
 public class Semester implements Serializable {
 
+    private int id;
     private Date start;
     private Date end;
 
+    public Semester(int id, Date start, Date end){
+        this.id = id;
+        this.start = start;
+        this.end = end;
+    }
+
     public Semester(Date start, Date end){
+        id = -1;
         this.start = start;
         this.end = end;
     }
@@ -22,5 +30,9 @@ public class Semester implements Serializable {
 
     public Date getEnd() {
         return end;
+    }
+
+    public int getId() {
+        return id;
     }
 }

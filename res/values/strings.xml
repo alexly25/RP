@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RP</string>
+    <string name="app_name">Расписание</string>
     <string name="activity_main">Неделя</string>
-    <string name="activity_template">Нечетная неделя</string>
+    <string name="activity_template">Шаблон</string>
     <string name="activity_groups">Группы</string>
     <string name="activity_subject">Предметы</string>
     <string name="activity_semester">Семестры</string>

@@ -14,22 +14,25 @@ import com.alex.rp.semester.Semesters;
 import com.alex.rp.statistic.StatisticActivity;
 import com.alex.rp.subject.Subjects;
 import com.alex.rp.tables.Table;
-import com.alex.rp.tables.WeekTable;
+import com.alex.rp.tables.TimetableTable;
 
 import java.util.Date;
 
 /**
  * Created by alex on 23.03.14.
  */
-public class TimetableActivity extends ActionBarActivity {
+public class TimetableActivity extends ActionBarActivity implements View.OnClickListener{
 
     private final static String LOG = "TimetableActivity";
     private MyString selectedGroup;
     private TableLayout tl;
     private Date date;
     private Table table;
+    private boolean even;
 
     public void onCreate(Bundle savedInstanceState) {
+
+        Log.d(LOG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.week);
 
@@ -39,9 +42,15 @@ public class TimetableActivity extends ActionBarActivity {
         tl.setStretchAllColumns(true);
         tl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        table = new WeekTable(this, tl, date);
+        table = new TimetableTable(this, tl, date, even);
 
+    }
 
+    @Override
+    protected void onRestart() {
+        Log.d(LOG, "onRestart()");
+        super.onRestart();
+        table = new TimetableTable(this, tl, date, even);
     }
 
     @Override
@@ -83,7 +92,8 @@ public class TimetableActivity extends ActionBarActivity {
 
         long dateTime = date.getTime() - 604800000;
         date = new Date(dateTime);
-        ((WeekTable)table).setDate(date);
+        table = new TimetableTable(this, tl, date, even);
+        //((TimetableTable)table).setDate(date);
     }
 
     private void next(){
@@ -91,7 +101,8 @@ public class TimetableActivity extends ActionBarActivity {
 
         long dateTime = date.getTime() + 604800000;
         date = new Date(dateTime);
-        ((WeekTable)table).setDate(date);
+        table = new TimetableTable(this, tl, date, even);
+        //((TimetableTable)table).setDate(date);
     }
 
 /*
@@ -113,5 +124,10 @@ public class TimetableActivity extends ActionBarActivity {
         selectedGroup.setString(group);
 
         Log.d(LOG, "selected group: " + selectedGroup.getString());
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

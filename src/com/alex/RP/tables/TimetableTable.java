@@ -9,6 +9,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import com.alex.rp.MyString;
 import com.alex.rp.R;
+import com.alex.rp.semester.Semester;
+import com.alex.rp.week.Timetable;
+import com.alex.rp.week.TimetableActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,18 +20,22 @@ import java.util.GregorianCalendar;
 /**
  * Created by alex on 02.05.2014.
  */
-public class WeekTable extends Table {
+public class TimetableTable extends Table {
 
-    private final static String LOG = "WeekTable";
+    private final static String LOG = "TimetableTable";
     Date date;
     protected Calendar calendar;
 
-    public WeekTable(Activity activity, TableLayout tl, Date date) {
-        super(activity, tl);
+    public TimetableTable(Activity activity, TableLayout tl, Date date, boolean even) {
+        super(activity, tl, even);
+
+        //db.update(new Semester(new Date(date.getTime() - 604800000), new Date(date.getTime() + 604800000)));
 
         this.date = date;
         calendar = new GregorianCalendar();
         calendar.setTime(date);
+        Semester semester = db.getSemester(date);
+        alTimetables = db.getTimetables(semester);
 
         for (int i = 0; i < 8; i++) {
 
@@ -60,10 +67,14 @@ public class WeekTable extends Table {
                     arrTv[i - 2] = textView;
                 } else {
 
-                    //String group = DB.get(true, value);
-                    //textView.setText(group);
+                    Timetable timetable = null;
+
+                    if((timetable = getTimetable(value)) != null){
+                        textView.setText(timetable.getLesson().getGroup().getName());
+                    }
+
                     textView.setId(value);
-                    textView.setOnClickListener(this);
+                    textView.setOnClickListener((TimetableActivity)activity);
 
                 }
 
@@ -84,6 +95,22 @@ public class WeekTable extends Table {
 
         db.close();
 
+    }
+
+    private Timetable getTimetable(int day) {
+
+        if(alTimetables == null){
+            return null;
+        }
+
+        for(int i=0; i<alTimetables.size(); i++){
+            Timetable timetable = alTimetables.get(i);
+            if(timetable.getDay() == day){
+                return timetable;
+            }
+        }
+
+        return null;
     }
 
     protected String getDateAndDay(int i) {
@@ -124,10 +151,12 @@ public class WeekTable extends Table {
         }
         return dateAndDay;
     }
+/*
 
     @Override
     public void onClick(View view) {
         Log.d(LOG, "onClick");
+*/
 /*
         String group = selectedGroup.getString();
         int id = view.getId();
@@ -137,9 +166,11 @@ public class WeekTable extends Table {
         DB.add(true, id, group);
         String group2 = DB.get(true, id);
         tv.setText(group2);
-        DB.close();*/
+        DB.close();*//*
+
 
         long dateTime;
+*/
 /*
         switch (view.getId()) {
             case R.id.btn_back_week:
@@ -158,8 +189,10 @@ public class WeekTable extends Table {
                 setDate(date);
 
                 break;
-        }*/
+        }*//*
+
     }
+*/
 
     public void setDate(Date date) {
         this.date = date;
