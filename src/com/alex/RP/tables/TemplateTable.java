@@ -1,20 +1,14 @@
 package com.alex.rp.tables;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import com.alex.rp.db.Vars;
-import com.alex.rp.lesson.LessonActivity;
 import com.alex.rp.R;
 import com.alex.rp.semester.Semester;
+import com.alex.rp.week.Template;
 import com.alex.rp.week.TemplateActivity;
-import com.alex.rp.week.Timetable;
-
-import java.util.ArrayList;
 
 /**
  * Created by alex on 02.05.2014.
@@ -27,7 +21,7 @@ public class TemplateTable extends Table {
     public TemplateTable(Activity activity, TableLayout tl, Semester semester, boolean even) {
         super(activity, tl, even);
         this.semester = semester;
-        alTimetables = db.getTimetables(semester);
+        alTemplates = db.getTemplates(semester);
 
         for (int i = 0; i < 8; i++) {
 
@@ -40,12 +34,13 @@ public class TemplateTable extends Table {
                 final int value = ((i - 1) * 10) + j;
 
                 TextView textView = new TextView(activity);
+                int color = -1;
 
                 if (i == 0) {
                     if (j == 0) {
-                        //Date date = new Date();
-                        //textView.setText(date.getDay() + "");
-                        //textView.setId(value);
+                        String s;
+                        s = (even) ? "II" : "I";
+                        textView.setText(s);
                     } else {
                         textView.setText("" + j);
                     }
@@ -60,10 +55,11 @@ public class TemplateTable extends Table {
                     arrTv[i - 2] = textView;
                 } else {
 
-                    Timetable timetable = getTimetable(value);
+                    Template template = getTimetable(value);
 
-                    if(timetable != null){
-                        textView.setText(timetable.getLesson().getGroup().getName());
+                    if (template != null) {
+                        textView.setText(template.getLesson().getGroup().getName());
+                        color = template.getLesson().getGroup().getColor();
                     }
 
                     textView.setId(value);
@@ -72,6 +68,9 @@ public class TemplateTable extends Table {
                 }
 
                 textView.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.border));
+                if(color != -1){
+                    textView.setBackgroundColor(color);
+                }
                 textView.setGravity(Gravity.CENTER);
                 textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
                 tr.addView(textView);
@@ -83,12 +82,11 @@ public class TemplateTable extends Table {
         db.close();
     }
 
-    private Timetable getTimetable(int day) {
+    private Template getTimetable(int day) {
 
-        for(int i=0; i<alTimetables.size(); i++){
-            Timetable timetable = alTimetables.get(i);
-            if(timetable.getDay() == day && timetable.isEven() == even){
-                return timetable;
+        for (Template template : alTemplates) {
+            if (template.getDay() == day && template.isEven() == even) {
+                return template;
             }
         }
 
@@ -126,7 +124,7 @@ public class TemplateTable extends Table {
     @Override
     public void onClick(View view) {
 
-        Timetable timetable = new Timetable(semester);
+        Template timetable = new Template(semester);
         timetable.setDay(view.getId());
 
         Intent intent = new Intent(activity, LessonActivity.class);

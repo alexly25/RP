@@ -3,6 +3,7 @@ package com.alex.rp.group;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,11 +22,16 @@ public class GroupDial extends DialogFragment implements DialogInterface.OnClick
     private final static String LOG = "GroupDial";
     private View v;
     private EditText etNameGroup;
-    private RadioGroup rgColor;
+    private EditText rgColor;
     private RadioGroup rgCommerce;
     private FragmentActivity activity;
-    private Group group;
+    private Group groupSelected;
     private Groups groups;
+
+    public void show(Group groupSelected, android.support.v4.app.FragmentManager manager, java.lang.String tag){
+        super.show(manager,null);
+        this.groupSelected = groupSelected;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -39,16 +45,14 @@ public class GroupDial extends DialogFragment implements DialogInterface.OnClick
 
             activity = getActivity();
             groups = ((Groups) activity);
-            group = groups.getSelectedGroup();
             LayoutInflater inflater = activity.getLayoutInflater();
             v = inflater.inflate(R.layout.group, null);
             etNameGroup = (EditText) v.findViewById(R.id.et_name_group);
-            rgColor = (RadioGroup) v.findViewById(R.id.rg_color);
+            rgColor = (EditText) v.findViewById(R.id.et_color);
             rgCommerce = (RadioGroup) v.findViewById(R.id.rg_commerce);
 
             builder.setView(v)
                     .setTitle("Информация")
-                    .setNegativeButton("Удалить", this)
                     .setPositiveButton("Изменить", this)
                     .setNeutralButton("Отмена", this);
 
@@ -63,17 +67,13 @@ public class GroupDial extends DialogFragment implements DialogInterface.OnClick
 
     private void init() {
 
-        etNameGroup.setText(group.getName());
+        etNameGroup.setText(groupSelected.getName());
         etNameGroup.setEnabled(false);
 
-        for (int i = 0; i < rgColor.getChildCount(); i++) {
-            RadioButton radioButton = (RadioButton) rgColor.getChildAt(i);
-            if (radioButton.getCurrentTextColor() == group.getColor().getId()) {
-                radioButton.setChecked(true);
-            }
-        }
+        rgColor.setText(groupSelected.getColor());
+        //rgColor.setText("");
 
-        if (group.isCommerce()) {
+        if (groupSelected.isCommerce()) {
             ((RadioButton) v.findViewById(R.id.rbCommerce)).setChecked(true);
         } else {
             ((RadioButton) v.findViewById(R.id.rbBudget)).setChecked(true);
@@ -85,14 +85,12 @@ public class GroupDial extends DialogFragment implements DialogInterface.OnClick
 
         if (i == Dialog.BUTTON_POSITIVE) {// Изменяем группу
 
-            int idSelectedColor = rgColor.getCheckedRadioButtonId();
-            RadioButton rbSelected = (RadioButton) v.findViewById(idSelectedColor);
-            int color = rbSelected.getCurrentTextColor();
+            int color = Integer.valueOf(rgColor.getText().toString());
 
             int idSelectedCommerce = rgCommerce.getCheckedRadioButtonId();
             boolean commerce = (idSelectedCommerce == R.id.rbCommerce) ? true : false;
 
-            Group newGroup = new Group(group.getName(), color, commerce);
+            Group newGroup = new Group(groupSelected.getName(), color, commerce);
 
             DB db = new DB(activity);
             db.add(newGroup);
@@ -100,13 +98,6 @@ public class GroupDial extends DialogFragment implements DialogInterface.OnClick
 
             groups.update();
 
-        } else if (i == Dialog.BUTTON_NEGATIVE) {// Удаляем группу
-
-            DB db = new DB(activity);
-            db.delete(group);
-            db.close();
-
-            groups.update();
         }
     }
 }

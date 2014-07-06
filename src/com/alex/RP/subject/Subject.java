@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Subject implements Serializable {
 
     private int id;
-    String name;
+    private String name;
 
     public Subject(int id, String name){
         this.id = id;

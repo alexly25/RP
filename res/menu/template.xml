@@ -6,13 +6,10 @@
           android:title="Смена недели"
           android:icon="@drawable/ic_action_refresh"
           sabd:showAsAction="always"/>
-    <!--item android:id="@+id/action_template"
-          android:title="Шаблон"
-          sabd:showAsAction="never"/-->
     <item android:id="@+id/action_new_group"
-          android:title="Новая группа"
+          android:title="Добавить группу"
           sabd:showAsAction="never"/>
     <item android:id="@+id/action_new_subject"
-          android:title="Новый предмет"
+          android:title="Добавить предмет"
           sabd:showAsAction="never"/>
 </menu>

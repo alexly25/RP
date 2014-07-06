@@ -3,16 +3,16 @@ package com.alex.rp.tables;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import com.alex.rp.MyString;
 import com.alex.rp.R;
 import com.alex.rp.semester.Semester;
-import com.alex.rp.week.Timetable;
+import com.alex.rp.week.Replacement;
+import com.alex.rp.week.Template;
 import com.alex.rp.week.TimetableActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -25,17 +25,26 @@ public class TimetableTable extends Table {
     private final static String LOG = "TimetableTable";
     Date date;
     protected Calendar calendar;
+    private ArrayList<Replacement> alReplacement;
+    Semester semester;
 
     public TimetableTable(Activity activity, TableLayout tl, Date date, boolean even) {
         super(activity, tl, even);
+        Log.d(LOG, "date="+date.toString());
+        Log.d(LOG, "date="+date.getTime());
+        int week = -1;
+        if ((semester = db.getSemester(date)) != null) {
+            alTemplates = db.getTemplates(semester);
+            alReplacement = db.getReplacements(semester);
+            week = semester.getWeek(date);
+            this.even = (week > 0 && week % 2 == 0) ? true : false;
+        }
 
-        //db.update(new Semester(new Date(date.getTime() - 604800000), new Date(date.getTime() + 604800000)));
+        //Log.d(LOG, "week="+semester.getWeekCount());
 
         this.date = date;
         calendar = new GregorianCalendar();
         calendar.setTime(date);
-        Semester semester = db.getSemester(date);
-        alTimetables = db.getTimetables(semester);
 
         for (int i = 0; i < 8; i++) {
 
@@ -48,12 +57,12 @@ public class TimetableTable extends Table {
                 final int value = ((i - 1) * 10) + j;
 
                 TextView textView = new TextView(activity);
+                int color = -1;
 
                 if (i == 0) {
-                    if (j == 0) {
-                        //textView.setText(calendar.DAY_OF_WEEK + "");
-                        //textView.setId(value);
-                    } else {
+                    if (j == 0 && semester != null) {// задаем номер недели
+                        textView.setText(String.valueOf(week));
+                    } else if (j != 0) {
                         textView.setText("" + j);
                     }
                 } else if (i == 1) {
@@ -67,24 +76,38 @@ public class TimetableTable extends Table {
                     arrTv[i - 2] = textView;
                 } else {
 
-                    Timetable timetable = null;
+                    Template template;
+                    Replacement replacement;
 
-                    if((timetable = getTimetable(value)) != null){
-                        textView.setText(timetable.getLesson().getGroup().getName());
+                    if ((replacement = getReplacement(value)) != null) {
+                        textView.setText(replacement.getLesson().getGroup().getName());
+                        color = replacement.getLesson().getGroup().getColor();
+                    } else if ((template = getTemplate(value)) != null) {
+                        textView.setText(template.getLesson().getGroup().getName());
+                        color = template.getLesson().getGroup().getColor();
                     }
 
                     textView.setId(value);
-                    textView.setOnClickListener((TimetableActivity)activity);
+                    textView.setOnClickListener((TimetableActivity) activity);
 
                 }
 
                 Calendar nowCalendar = Calendar.getInstance();
-                if (i == (nowCalendar.get(nowCalendar.DAY_OF_WEEK)) && nowCalendar.get(nowCalendar.DAY_OF_WEEK) != 7) {
+                int dayOfWeek = nowCalendar.get(Calendar.DAY_OF_WEEK);
+                int weekOfYear = nowCalendar.get(Calendar.WEEK_OF_YEAR);
+
+                //Log.d(LOG, "i="+i+" day="+dayOfWeek+" week="+weekOfYear+" calendar="+calendar.get(Calendar.WEEK_OF_YEAR));
+                if (i == dayOfWeek && dayOfWeek != 1 && weekOfYear == calendar.get(Calendar.WEEK_OF_YEAR)) {
                     textView.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.border2));
                     arrTvBorder2[i] = textView;
                 } else {
                     textView.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.border));
                 }
+
+                if(color != -1){
+                    textView.setBackgroundColor(color);
+                }
+
                 textView.setGravity(Gravity.CENTER);
                 textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
                 tr.addView(textView);
@@ -97,16 +120,33 @@ public class TimetableTable extends Table {
 
     }
 
-    private Timetable getTimetable(int day) {
 
-        if(alTimetables == null){
+    private Replacement getReplacement(int day) {
+
+        if(semester == null){
             return null;
         }
 
-        for(int i=0; i<alTimetables.size(); i++){
-            Timetable timetable = alTimetables.get(i);
-            if(timetable.getDay() == day){
-                return timetable;
+        int weekDate = semester.getWeek(this.date);
+
+        for (Replacement replacement : alReplacement) {
+
+            int weekReplacement = semester.getWeek(replacement.getDate());
+
+            if (weekDate == weekReplacement && day == replacement.getDay()) {
+                return replacement;
+            }
+        }
+
+        return null;
+    }
+
+
+    private Template getTemplate(int day) {
+
+        for (Template template : alTemplates) {
+            if (template.getDay() == day && template.isEven() == even) {
+                return template;
             }
         }
 
@@ -117,39 +157,48 @@ public class TimetableTable extends Table {
         String dateAndDay = null;
         String date = null;
         int day = calendar.get(calendar.DAY_OF_WEEK) - 1;
+        String month = getMount(calendar.get(calendar.MONTH) + 1);
 
 
         if (i == day) {
-            date = calendar.get(calendar.DAY_OF_MONTH) + "";
+            date = calendar.get(calendar.DAY_OF_MONTH) + "." + month;
         } else {
             int raz = i - day;
             Date otherDate = new Date(this.date.getTime() + (raz * 86400000));
             Calendar otherCalendar = new GregorianCalendar();
             otherCalendar.setTime(otherDate);
-            date = otherCalendar.get(otherCalendar.DAY_OF_MONTH) + "";
+            date = otherCalendar.get(otherCalendar.DAY_OF_MONTH) + "." + month;
         }
 
         switch (i) {
             case 1:
-                dateAndDay = "ПН/" + date;
+                dateAndDay = "ПН " + date;
                 break;
             case 2:
-                dateAndDay = "ВТ/" + date;
+                dateAndDay = "ВТ " + date;
                 break;
             case 3:
-                dateAndDay = "СР/" + date;
+                dateAndDay = "СР " + date;
                 break;
             case 4:
-                dateAndDay = "ЧТ/" + date;
+                dateAndDay = "ЧТ " + date;
                 break;
             case 5:
-                dateAndDay = "ПТ/" + date;
+                dateAndDay = "ПТ " + date;
                 break;
             case 6:
-                dateAndDay = "СБ/" + date;
+                dateAndDay = "СБ " + date;
                 break;
         }
         return dateAndDay;
+    }
+
+    private String getMount(int m) {
+        if (m < 10) {
+            return "0" + m;
+        } else {
+            return "" + m;
+        }
     }
 /*
 

@@ -86,17 +86,23 @@ public class TemplateActivity extends ActionBarActivity implements View.OnClickL
         even = !even;
 
         table = new TemplateTable(this, tl, semester, even);
+
+
     }
 
-
+    /**
+     * Метод сразатывающий при клики на дне недели. Вызывает окно добавления урока.
+     * @param view
+     */
     @Override
     public void onClick(View view) {
-        Timetable timetable = new Timetable(semester);
-        timetable.setDay(view.getId());
-        timetable.setEven(even);
+        Template template = new Template(semester);
+        template.setDay(view.getId());
+        template.setEven(even);
+        Log.d(LOG, "even: " + even);
 
         Intent intent = new Intent(this, LessonActivity.class);
-        intent.putExtra(Vars.FIELD_TIMETABLE, timetable);
+        intent.putExtra(Vars.FIELD_TEMPLATE, template);
         startActivity(intent);
     }
 }

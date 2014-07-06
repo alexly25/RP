@@ -8,12 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.alex.rp.R;
-import com.alex.rp.db.Color;
 import com.alex.rp.db.DB;
 import com.alex.rp.db.Vars;
 import com.alex.rp.group.Group;
 import com.alex.rp.subject.Subject;
-import com.alex.rp.week.Timetable;
+import com.alex.rp.week.Replacement;
+import com.alex.rp.week.Template;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,8 @@ public class LessonActivity extends ActionBarActivity implements AdapterView.OnI
     private ListView lvGroup;
     private ListView lvSubject;
     private RadioGroup rgType;
-    private Timetable timetable;
+    private Template template;
+    private Replacement replacement;
     private DB db;
     private ArrayList arrayList;
     private ArrayList<Group> groups;
@@ -38,10 +39,22 @@ public class LessonActivity extends ActionBarActivity implements AdapterView.OnI
 
 
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG, "onCreate 4");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lesson);
 
-        timetable = (Timetable) getIntent().getSerializableExtra(Vars.FIELD_TIMETABLE);
+        replacement = (Replacement) getIntent().getSerializableExtra(Vars.FIELD_REPLACEMENT);
+        template = (Template) getIntent().getSerializableExtra(Vars.FIELD_TEMPLATE);
+
+        //StringBuilder title = new StringBuilder();
+        //title.append(template.getDay());
+        //setTitle("ср. 2 пара чтн.нед.");
+
+        if(template != null) {
+            setTitle(template.toString());
+        } else {
+            setTitle(replacement.toString());
+        }
 
         rgType = (RadioGroup) findViewById(R.id.rg_lesson_type);
         lvGroup = (ListView) findViewById(R.id.lv_groups);
@@ -78,8 +91,8 @@ public class LessonActivity extends ActionBarActivity implements AdapterView.OnI
         arrayList = new ArrayList<String>();
         subjects = db.getSubjects();
 
-        for (int i = 0; i < subjects.size(); i++) {
-            String name = subjects.get(i).getName();
+        for (Subject subject : subjects) {
+            String name = subject.getName();
             arrayList.add(name);
         }
 
@@ -108,21 +121,31 @@ public class LessonActivity extends ActionBarActivity implements AdapterView.OnI
 
     private void addTimetable() {
 
+        Log.d(LOG, "addTimetable()");
+
         Lesson lesson = getLesson();
 
-        if(lesson != null){
-            timetable.setLesson(lesson);
+        if (lesson != null) {
 
             db = new DB(this);
-            if (db.add(timetable)){
-                db.close();
-                finish();
+
+            if(replacement != null){
+
+                replacement.setLesson(lesson);
+                db.add(replacement);
+
+            } else {
+
+                template.setLesson(lesson);
+                db.add(template);
             }
+
             db.close();
+            finish();
         }
     }
 
-    private Lesson getLesson(){
+    private Lesson getLesson() {
 
         if (selectedGroup == null) {
             Toast.makeText(this, "Выберите группу", Toast.LENGTH_LONG).show();
@@ -177,7 +200,7 @@ public class LessonActivity extends ActionBarActivity implements AdapterView.OnI
         for (int i = 0; i < adapterView.getChildCount(); i++) {
             TextView textView = (TextView) adapterView.getChildAt(i);
             if (textView.getText().equals(name)) {
-                textView.setBackgroundColor(android.graphics.Color.BLUE);
+                textView.setBackgroundColor(android.graphics.Color.parseColor("#ffd0d0d0"));
             }
         }
     }

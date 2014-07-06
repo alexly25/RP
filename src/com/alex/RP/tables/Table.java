@@ -1,17 +1,12 @@
 package com.alex.rp.tables;
 
 import android.app.Activity;
-import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import com.alex.rp.db.DB;
-import com.alex.rp.MyString;
-import com.alex.rp.week.Timetable;
+import com.alex.rp.week.Template;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by alex on 24.03.14.
@@ -23,7 +18,7 @@ public abstract class Table {
     protected DB db;
     protected TextView[] arrTv;
     protected TextView[] arrTvBorder2;// Массив TV содержащий столбцы сегоднешнего дня
-    protected ArrayList<Timetable> alTimetables;
+    protected ArrayList<Template> alTemplates;
     protected boolean even;
 
 
@@ -31,6 +26,7 @@ public abstract class Table {
 
         this.activity = activity;
         this.even = even;
+        this.alTemplates = new ArrayList<Template>();
 
         db = new DB(activity);
         db.outTables();

@@ -29,39 +29,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Цвет:"
-                    android:id="@+id/textView2" android:layout_weight="1"
+                    android:id="@+id/tv_color" android:layout_weight="1"
                     android:gravity="center"/>
-            <ScrollView
+            <EditText
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" android:layout_weight="1"
-                    android:gravity="center"
-                    android:id="@+id/scrollView" android:focusable="false">
-
-                <RadioGroup
-                        android:id="@+id/rg_color"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center">
-                    <RadioButton
-                            android:id="@+id/radioHeaderYes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="Красный" android:layout_gravity="left" android:textColor="#ff0000"/>
-
-                    <RadioButton
-                            android:id="@+id/radioHeaderNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Синий" android:layout_gravity="left" android:textColor="#0000ff"/>
-
-                    <RadioButton
-                            android:id="@+id/radioHeaderNA"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Зеленный" android:layout_gravity="left" android:textColor="#00ff00"/>
-                </RadioGroup>
-            </ScrollView>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_color" android:layout_weight="1"
+                    android:gravity="center" android:maxLength="6"/>
         </TableRow>
         <TableRow
                 android:layout_width="fill_parent"

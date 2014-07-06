@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:padding="6dip">
+
+    <TextView
+            android:id="@+id/tv_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:height="39dp"
+            android:background="#ff7ed05f" android:width="6dp" android:layout_margin="6dp"/>
+
+
+    <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_color" android:layout_toLeftOf="@+id/cb_group_item"
+            android:layout_marginTop="4dp" android:id="@+id/tableLayout">
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="19dp"
+                      android:text="top"
+                      android:id="@+id/tv_name"/>
+        </TableRow>
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:text="bottom"
+                    android:id="@+id/tv_commerce"/>
+        </TableRow>
+    </TableLayout>
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cb_group_item"
+            android:layout_alignParentRight="true"/>
+
+
+</RelativeLayout>

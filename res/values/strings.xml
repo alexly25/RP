@@ -6,5 +6,7 @@
     <string name="activity_groups">Группы</string>
     <string name="activity_subject">Предметы</string>
     <string name="activity_semester">Семестры</string>
+    <string name="activity_statistic">Статистика</string>
+    <string name="activity_group">пкс2</string>
 
 </resources>

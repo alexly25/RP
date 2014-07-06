@@ -5,9 +5,43 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_margin="5dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Всего: 0"
+                android:id="@+id/tv_all" android:layout_weight="1"
+                android:textSize="19dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Бюджет: 0"
+                android:id="@+id/tv_budget" android:layout_weight="1"
+                android:textSize="19dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="В/б: 0"
+                android:id="@+id/tv_vb" android:layout_weight="1"
+                android:textSize="19dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Другие: 0"
+                android:id="@+id/tv_other" android:layout_weight="1"
+                android:textSize="19dp"/>
+    </LinearLayout>
+    <!--TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Статистика"
+            android:id="@+id/tv_statistic" android:gravity="top" android:layout_gravity="center_horizontal"
+            android:textSize="20dp"/-->
+    <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Статистика"
-            android:id="@+id/textView" android:gravity="center" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/list_group"/>
 </LinearLayout>

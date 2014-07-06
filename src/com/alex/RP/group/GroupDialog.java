@@ -3,16 +3,18 @@ package com.alex.rp.group;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
-import com.alex.rp.R;
+import android.widget.TextView;
+import com.alex.rp.R;/*
+import com.alex.rp.db.Color;*/
 import com.alex.rp.db.DB;
 
 /**
@@ -23,7 +25,7 @@ public class GroupDialog extends DialogFragment implements DialogInterface.OnCli
     private final static String LOG = "GroupDialog";
     private View v;
     private EditText etNameGroup;
-    private RadioGroup rgColor;
+    private EditText etColor;
     private RadioGroup rgCommerce;
 
     @Override
@@ -39,16 +41,8 @@ public class GroupDialog extends DialogFragment implements DialogInterface.OnCli
             LayoutInflater inflater = getActivity().getLayoutInflater();
             v = inflater.inflate(R.layout.group, null);
             etNameGroup = (EditText) v.findViewById(R.id.et_name_group);
-            rgColor = (RadioGroup) v.findViewById(R.id.rg_color);
+            etColor = (EditText) v.findViewById(R.id.et_color);
             rgCommerce = (RadioGroup) v.findViewById(R.id.rg_commerce);
-
-            final ScrollView scrollView = (ScrollView) v.findViewById(R.id.scrollView);
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.scrollTo(0, 30);
-                }
-            });
 
             builder.setView(v)
                     .setTitle("Новая группа")
@@ -69,9 +63,8 @@ public class GroupDialog extends DialogFragment implements DialogInterface.OnCli
 
         if (i == Dialog.BUTTON_POSITIVE && !nameGroup.equals("")) {
 
-            int idSelectedColor = rgColor.getCheckedRadioButtonId();
-            RadioButton rbSelected = (RadioButton) v.findViewById(idSelectedColor);
-            int color = rbSelected.getCurrentTextColor();
+            String sColor = etColor.getText().toString();
+            int color = Color.parseColor("#" + sColor);
 
             int idSelectedCommerce = rgCommerce.getCheckedRadioButtonId();
             boolean commerce = (idSelectedCommerce == R.id.rbCommerce) ? true : false;
